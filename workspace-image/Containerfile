@@ -8,7 +8,7 @@ ENV BUILDAH_ISOLATION=chroot
 
 COPY --chown=0:0 entrypoint.sh /
 
-RUN microdnf --disableplugin=subscription-manager install -y procps-ng openssl git tar shadow-utils bash zsh podman buildah skopeo python3-pip python3-devel aardvark-dns fuse-overlayfs util-linux vim-minimal vim-enhanced ; \
+RUN microdnf --disableplugin=subscription-manager install -y procps-ng openssl git tar curl shadow-utils bash zsh podman buildah skopeo python3-pip python3-devel aardvark-dns fuse-overlayfs util-linux vim-minimal vim-enhanced ; \
     microdnf update -y ; \
     microdnf clean all ; \
     pip3 install podman-compose ; \
@@ -37,7 +37,9 @@ RUN microdnf --disableplugin=subscription-manager install -y procps-ng openssl g
     TEMP_DIR="$(mktemp -d)" ; \
     curl -fsSL -o ${TEMP_DIR}/nvim-linux-x86_64.tar.gz https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.tar.gz ; \
     tar -xzf ${TEMP_DIR}/nvim-linux-x86_64.tar.gz -C ${TEMP_DIR} ; \
-    cp ${TEMP_DIR}/nvim-linux-arm64/bin/nvim /usr/local/bin/nvim ; \
+    cp ${TEMP_DIR}/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim ; \
+    cp -r ${TEMP_DIR}/nvim-linux-x86_64/lib /usr/local ; \
+    cp -r ${TEMP_DIR}/nvim-linux-x86_64/share /usr/local ; \
     chmod + /usr/local/bin/nvim ; \
     rm -rf "${TEMP_DIR}"
 
